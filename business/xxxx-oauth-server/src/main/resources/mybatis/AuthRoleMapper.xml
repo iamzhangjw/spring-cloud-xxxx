@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.zjw.xxxx.oauth.server.mapper.AuthRoleMapper">
+    <select id="page" resultType="pers.zjw.xxxx.oauth.server.pojo.entity.AuthRole">
+        SELECT *
+        FROM auth_role
+        <where>
+            deleted = 0
+            <if test="condition != null">
+                <if test="condition.name != null">
+                    and name like CONCAT('%',#{condition.name},'%')
+                </if>
+                <if test="condition.code != null">
+                    and code like CONCAT('%',#{condition.code},'%')
+                </if>
+                <if test="condition.enabled != null">
+                    and enabled = #{condition.enabled}
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="getByUsername" resultType="pers.zjw.xxxx.oauth.server.pojo.entity.AuthRole">
+        SELECT r.id id, r.name name, r.code code, r.description description
+        FROM auth_role r
+        INNER JOIN auth_user_role_relation rr ON rr.role_id = r.id AND rr.deleted = r.deleted
+        INNER JOIN auth_user u JOIN u.id = rr.user_id AND u.deleted = rr.deleted
+        <where>
+            rr.name = #{username} AND r.deleted = 0 AND r.enabled = 1
+        </where>
+    </select>
+</mapper>

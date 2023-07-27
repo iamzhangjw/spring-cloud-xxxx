@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>authorize</title>
+    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h2>你是否授权client_id=<span th:text="${client_id}">client_id</span>访问你的受保护资源?</h2>
+    <div style="height: 20px;"></div>
+    <form id="confirmationForm" name="confirmationForm" action="authorize" method="post">
+        <input type="hidden" name="response_type" th:value="${response_type}"/>
+        <input type="hidden" name="client_id" th:value="${client_id}"/>
+        <input type="hidden" name="redirect_uri" th:value="${redirect_uri}"/>
+        <input type="hidden" name="scope" th:value="${scope}"/>
+        <input type="hidden" name="state" th:value="${state}"/>
+        <input type="hidden" name="approval" value="true"/>
+        <button class="btn btn-primary" type="submit">Approve</button>
+    </form>
+    <div style="height: 20px;"></div>
+    <form id="denyForm" name="confirmationForm" action="authorize" method="post">
+        <input type="hidden" name="response_type" th:value="${response_type}">
+        <input type="hidden" name="client_id" th:value="${client_id}">
+        <input type="hidden" name="redirect_uri" th:value="${redirect_uri}">
+        <input type="hidden" name="scope" th:value="${scope}">
+        <input type="hidden" name="state" th:value="${state}">
+        <input type="hidden" name="approval" value="false"/>
+        <button class="btn btn-primary" type="submit">Deny</button>
+    </form>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"  crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.1.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

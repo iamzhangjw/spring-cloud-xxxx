@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.zjw.xxxx.demo.mapper.UserMapper">
+    <select id="page" resultType="pers.zjw.xxxx.demo.pojo.resp.UserResp">
+        select name, mobile, certification_no certificationNo, email from user
+        <where>
+            deleted = 0
+            <if test="req != null">
+                <if test="req.name != null">
+                    and name like CONCAT('%',#{req.name},'%')
+                </if>
+                <if test="req.mobile != null">
+                    and mobile = #{req.mobile})
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="pageByName" resultType="pers.zjw.xxxx.demo.pojo.resp.UserResp">
+        select name, mobile, certification_no certificationNo, email from user
+        <where>
+            deleted = 0
+            <if test="name != null">
+                and name like CONCAT('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getMobileByNameAndCertificationNo" resultType="string">
+        select mobile from user
+        <where>
+            deleted = 0 and name = #{name} and certification_no = #{certificationNo}
+        </where>
+    </select>
+
+    <select id="getMobileByCertificationNo" resultType="string">
+        select mobile from user
+        <where>
+            deleted = 0 and certification_no = #{certificationNo}
+        </where>
+    </select>
+
+    <select id="listByIds" resultType="pers.zjw.xxxx.demo.pojo.resp.UserResp">
+        select name, mobile, certification_no certificationNo, email from user
+        <where>
+            deleted = 0 and id in
+            <foreach collection= "ids" index= "index" item= "item" open= "(" separator= "," close= ")" >
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="listByCondition" resultType="pers.zjw.xxxx.demo.pojo.resp.UserResp" parameterType="map">
+        select name, mobile, certification_no certificationNo, email from user
+        <where>
+            deleted = 0
+            <if test="name != null">
+                and name like CONCAT('%',#{name},'%')
+            </if>
+            <if test="mobile != null">
+                and mobile = #{mobile})
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>pers.zjw.xxxx</groupId>
+        <artifactId>spring-cloud-xxxx</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>base</artifactId>
+    <packaging>pom</packaging>
+
+    <name>base</name>
+    <description>xxxx 项目开箱依赖，包括各种数据源引入、权限及 web 支持依赖</description>
+
+    <modules>
+        <module>mbp-generator</module>
+        <module>xxxx-foundation</module>
+        <module>xxxx-web-starter</module>
+        <module>xxxx-mongodb-starter</module>
+        <module>xxxx-redis-starter</module>
+        <module>xxxx-oauth-client</module>
+        <module>xxxx-mysql-starter</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.7.13</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.1</version>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>pers.zjw.xxxx</groupId>
+        <artifactId>spring-cloud-xxxx</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>business</artifactId>
+    <packaging>pom</packaging>
+
+    <name>business</name>
+    <description>xxxx 业务模块</description>
+
+    <modules>
+        <module>xxxx-demo</module>
+        <module>xxxx-oauth-server</module>
+        <module>xxxx-job</module>
+        <module>xxxx-websocket</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>pers.zjw.xxxx</groupId>
+            <artifactId>xxxx-web-starter</artifactId>
+        </dependency>
+    </dependencies>
+</project>

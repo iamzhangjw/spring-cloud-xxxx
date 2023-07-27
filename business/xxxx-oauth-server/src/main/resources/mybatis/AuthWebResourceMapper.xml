@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.zjw.xxxx.oauth.server.mapper.AuthWebResourceMapper">
+    <select id="getById" resultType="pers.zjw.xxxx.oauth.server.pojo.vo.WebResource">
+        SELECT id, name, display_name displayName, code, uri, type, parent_id parentId, order_num orderNum, enabled
+        FROM auth_web_resource
+        <where>
+            deleted = 0 AND id = #{id}
+        </where>
+    </select>
+    <select id="getByCode" resultType="pers.zjw.xxxx.oauth.server.pojo.vo.WebResource">
+        SELECT id, name, display_name displayName, code, uri, type, parent_id parentId, order_num orderNum, enabled
+        FROM auth_web_resource
+        <where>
+            deleted = 0 AND code = #{code}
+        </where>
+    </select>
+
+    <select id="leaves" resultType="pers.zjw.xxxx.oauth.server.pojo.vo.WebResource">
+        SELECT id, name, display_name displayName, code, uri, type, parent_id parentId, order_num orderNum, enabled
+        FROM auth_web_resource
+        <where>
+            deleted = 0 AND enabled = 1
+            <if test="path != null">
+                AND path LIKE CONCAT(#{path},'-','%')
+            </if>
+            <if test="types != null">
+                AND type IN
+                <foreach collection="types" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>

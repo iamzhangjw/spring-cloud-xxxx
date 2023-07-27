@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.zjw.xxxx.oauth.server.mapper.AuthRoleWebResourceRelationMapper">
+    <select id="listResourceIdsByRole" resultType="long">
+        SELECT rwrr.resource_id FROM auth_role_web_resource_relation rwrr
+        INNER JOIN auth_web_resource wr ON wr.id = rwrr.resource_id AND wr.deleted = rwrr.deleted AND wr.enabled = 1
+        <where>
+            rwrr.deleted = 0 AND rwrr.role_id = #{roleId}
+        </where>
+    </select>
+    <select id="listResourceIdsByUser" resultType="long">
+        SELECT wr.id FROM auth_web_resource wr
+        INNER JOIN auth_role_web_resource_relation rwrr ON rwrr.resource_id = wr.id AND wr.deleted = rwrr.deleted
+        INNER JOIN auth_role r ON r.id = rwrr.role_id AND r.deleted = rwrr.deleted
+        INNER JOIN auth_user_role_relation urr ON urr.role_id = r.id AND urr.deleted = r.deleted
+        <where>
+            wr.deleted = 0 AND wr.enabled = 1 AND r.enabled = 1 AND urr.user_id = #{userId}
+        </where>
+    </select>
+
+    <select id="listResourcesByRole" resultType="pers.zjw.xxxx.oauth.server.pojo.vo.WebResource">
+        SELECT
+            wr.id id, wr.name name, wr.display_name displayName, wr.code code,
+            wr.uri uri, wr.type type, wr.parent_id parentId, wr.order_num orderNum,
+            wr.enabled enabled
+        FROM auth_role_web_resource_relation rwrr
+        INNER JOIN auth_web_resource wr ON wr.id = rwrr.resource_id AND wr.deleted = rwrr.deleted AND wr.enabled = 1
+        <where>
+            rwrr.deleted = 0 AND rwrr.role_id = #{roleId}
+            <if test="types != null">
+                AND wr.type IN
+                <foreach collection="types" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="listResourcesByUser" resultType="pers.zjw.xxxx.oauth.server.pojo.vo.WebResource">
+        SELECT
+            wr.id id, wr.name name, wr.display_name displayName, wr.code code,
+            wr.uri uri, wr.type type, wr.parent_id parentId, wr.order_num orderNum,
+            wr.enabled enabled
+        FROM auth_web_resource wr
+        INNER JOIN auth_role_web_resource_relation rwrr ON rwrr.resource_id = wr.id  AND rwrr.deleted = wr.deleted
+        INNER JOIN auth_user_role_relation urr ON urr.role_id = rwrr.role_id AND urr.deleted = rwrr.deleted
+        INNER JOIN auth_role r ON r.id = urr.role_id AND r.deleted = urr.deleted
+        <where>
+            urr.user_id = #{userId} AND wr.deleted = 0 AND r.enabled = 1
+            <if test="types != null">
+                AND wr.type IN
+                <foreach collection="types" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>

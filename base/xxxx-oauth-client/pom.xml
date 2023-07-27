@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>pers.zjw.xxxx</groupId>
+        <artifactId>base</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>xxxx-oauth-client</artifactId>
+
+    <name>xxxx-oauth-client</name>
+    <description>xxxx 鉴权依赖，如果业务模块接口启用权限验证则添加依赖，默认已经引入了 web 支持</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>pers.zjw.xxxx</groupId>
+            <artifactId>xxxx-web-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>pers.zjw.xxxx</groupId>
+            <artifactId>xxxx-mysql-starter</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

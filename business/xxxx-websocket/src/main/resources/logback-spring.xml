@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <property name="LOG_HOME" value="${user.dir}/logs"/>
+    <springProfile name="test">
+        <property name="LOG_HOME" value="/data/logs/xxxx/websocket" />
+    </springProfile>
+    <springProfile name="prod">
+        <property name="LOG_HOME" value="/data/logs/xxxx/websocket" />
+    </springProfile>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <appender name="fileLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_HOME}/xxxx-websocket.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/xxxx-websocket.log.%d{yyyy-MM-dd}.%i</fileNamePattern>
+            <MaxHistory>15</MaxHistory>
+            <MaxFileSize>100MB</MaxFileSize>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level] [%thread] [%logger{36}:%line] - [%X{logId}] - %msg%n</pattern>
+        </layout>
+    </appender>
+    <appender name="asyncFileAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>500</queueSize>
+        <appender-ref ref="fileLog"/>
+    </appender>
+    <appender name="grpcLog" class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.log.GRPCLogClientAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogbackLayout">
+                <Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level] [%X{tid}] [%thread] [%logger{36}:%line] - [%X{logId}] - %msg%n</Pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <logger name="org" level="WARN" />
+    <logger name="java" level="WARN" />
+    <logger name="sun" level="WARN" />
+    <logger name="com.alibaba" level="WARN" />
+    <logger name="io" level="WARN" />
+    <logger name="jdk" level="WARN" />
+    <logger name="reactor" level="WARN" />
+    <logger name="com.netflix" level="WARN" />
+    <logger name="com.zaxxer" level="WARN" />
+
+    <springProfile name="local | dev">
+        <logger name="pers.zjw" level="DEBUG" />
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="grpcLog"/>
+        </root>
+    </springProfile>
+    <springProfile name="test">
+        <logger name="pers.zjw" level="INFO" />
+        <root level="INFO">
+            <appender-ref ref="fileLog" />
+        </root>
+    </springProfile>
+    <springProfile name="prod">
+        <logger name="pers.zjw" level="INFO" />
+        <root level="WARN">
+            <appender-ref ref="asyncFileAppender" />
+        </root>
+    </springProfile>
+</configuration>

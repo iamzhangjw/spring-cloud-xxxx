@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.zjw.xxxx.oauth.server.mapper.AuthRoleApiResourceRelationMapper">
+    <select id="listByRole" resultType="pers.zjw.xxxx.oauth.server.pojo.vo.ApiResource">
+        SELECT r.service service, r.uri uri, r.method method
+        FROM auth_role_api_resource_relation rr
+        INNER JOIN auth_api_resource r ON r.id = rr.resource_id AND r.deleted = rr.deleted
+        <where>
+            rr.role_id = #{roleId} AND rr.deleted = 0
+        </where>
+    </select>
+    <select id="listByRoleCode" resultType="pers.zjw.xxxx.oauth.server.pojo.vo.ApiResource">
+        SELECT r.service service, r.uri uri, r.method method
+        FROM auth_role_api_resource_relation rr
+        INNER JOIN auth_role r ON r.id = rr.role_id AND r.deleted = rr.deleted
+        INNER JOIN auth_api_resource ar ON ar.id = rr.resource_id AND ar.deleted = rr.deleted
+        <where>
+            r.code = #{roleCode} AND rr.deleted = 0
+        </where>
+    </select>
+
+    <select id="listByUser" resultType="pers.zjw.xxxx.oauth.server.pojo.vo.ApiResource">
+        SELECT ar.service service, ar.uri uri, ar.method method
+        FROM auth_api_resource ar
+        INNER JOIN auth_role_api_resource_relation rarr ON rarr.resource_id = ar.id AND rarr.deleted = ar.deleted
+        INNER JOIN auth_user_role_relation urr ON urr.role_id = rarr.role_id AND urr.deleted = rarr.deleted
+        INNER JOIN auth_role r ON r.id = urr.role_id AND r.deleted = urr.deleted
+        <where>
+            urr.user_id = #{userId} AND ar.deleted = 0 AND r.enabled = 1
+        </where>
+    </select>
+    <select id="listByUsername" resultType="pers.zjw.xxxx.oauth.server.pojo.vo.ApiResource">
+        SELECT ar.service service, ar.uri uri, ar.method method
+        FROM auth_api_resource ar
+        INNER JOIN auth_role_api_resource_relation rarr ON rarr.resource_id = ar.id AND rarr.deleted = ar.deleted
+        INNER JOIN auth_user_role_relation urr ON urr.role_id = rarr.role_id AND urr.deleted = rarr.deleted
+        INNER JOIN auth_role r ON r.id = urr.role_id AND r.deleted = urr.deleted
+        INNER JOIN auth_user u ON u.id = urr.user_id AND u.deleted = urr.deleted
+        <where>
+            u.name = #{username} AND ar.deleted = 0 AND r.enabled = 1
+        </where>
+    </select>
+</mapper>

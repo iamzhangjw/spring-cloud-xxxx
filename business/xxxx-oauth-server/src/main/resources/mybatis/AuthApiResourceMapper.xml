@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.zjw.xxxx.oauth.server.mapper.AuthApiResourceMapper">
+    <select id="page" resultType="pers.zjw.xxxx.oauth.server.pojo.response.AuthApiResourceResp">
+        SELECT id, name, service, uri, method, exclude
+        FROM auth_api_resource
+        <where>
+            deleted = 0
+            <if test="condition != null">
+                <if test="condition.name != null">
+                    and name like CONCAT('%',#{condition.name},'%')
+                </if>
+                <if test="condition.service != null">
+                    and service = #{condition.name}
+                </if>
+                <if test="condition.uri != null">
+                    and uri like CONCAT('%',#{condition.uri},'%')
+                </if>
+                <if test="condition.method != null">
+                    and method = #{condition.method}
+                </if>
+                <if test="condition.exclude != null">
+                    and exclude = #{condition.exclude}
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="allExcludes" resultType="pers.zjw.xxxx.oauth.server.pojo.vo.ApiResource">
+        SELECT service, uri, method
+        FROM auth_api_resource
+        <where>
+            deleted = 0 AND exclude = 1
+        </where>
+    </select>
+</mapper>
